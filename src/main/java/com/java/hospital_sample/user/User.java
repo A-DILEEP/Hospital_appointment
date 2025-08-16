@@ -1,56 +1,53 @@
 package com.java.hospital_sample.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users") 
+@Table(name = "users")
 public class User {
-	@Id
-	private int userid;
-	private String name;
-	private int age;
-	private String Address;
-	private int weight;
-	public User() {
-		
-	}
-	public int getId() {
-		return userid;
-	}
-	public void setId(int id) {
-		this.userid = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public int getAge() {
-		return age;
-	}
-	public void setAge(int age) {
-		this.age = age;
-	}
-	public String getAddress() {
-		return Address;
-	}
-	public void setAddress(String address) {
-		Address = address;
-	}
-	public void setWeight(int weight) {
-		this.weight=weight;
-	}
-	public int getWeight() {
-		return weight;
-	}
-	public User(int userid, String name, int age, String address, int weight) {
-		this.userid = userid;
-		this.name = name;
-		this.age = age;
-		Address = address;
-		this.weight = weight;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int userid;
+
+    private String name;
+    private int age;
+    private String address;
+    private int weight;
+    private String email;
+    private String password;
+
+    public User() {}
+
+    public User(int userid, String name, int age, String address, int weight, String email, String password) {
+        this.userid = userid;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+        this.weight = weight;
+        this.email = email;
+        this.password = password;
+    }
+
+    // Getters and setters
+    public int getUserid() { return userid; }
+    public void setUserid(int userid) { this.userid = userid; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
+
+    public int getWeight() { return weight; }
+  public void setWeight(int weight) {
+	  this.weight=weight;
+	  }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

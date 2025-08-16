@@ -1,66 +1,77 @@
 package com.java.hospital_sample.Controller;
 
-import java.util.List;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
 
 import com.java.hospital_sample.Repositary.UserRepositary;
 import com.java.hospital_sample.user.User;
 
-
+import java.util.*;
+@CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
-    public UserRepositary person;
-   
-    @GetMapping("/users")
-    public List<User> getAllDetails() {
-        return person.findAll();
+    private UserRepositary userRepository;
+
+    // ✅ Register a new user
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        return ResponseEntity.ok(userRepository.save(user));
     }
 
-@GetMapping("/users/{userid}")
-public ResponseEntity<User> getPatientById(@PathVariable int userid) {
-    return person.findById(userid)
-        .map(user -> ResponseEntity.ok().body(user))
-        .orElse(ResponseEntity.notFound().build());
-}
+    // ✅ Login with name and password
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
+        String name = credentials.get("name");
+        String password = credentials.get("password");
 
+        User user = userRepository.findByName(name);
+        if (user != null && user.getPassword().equals(password)) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid name or password");
+        }
+    }
 
-    @PostMapping("/users")
-    public User createPatient(@RequestBody User user) {
-        return person.save(user);
+    // ✅ Get all users
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
-    
-    @PutMapping("/users/{userid}")
-    public String updatePatient(@PathVariable int userid, @RequestBody User user) {
-    	if(person.existsById(userid)) {
-    		person.save(user);
-    		return "updated record";
-    	}
-    	else {
-    		return "Person not founded";
-    	}
+
+    // ✅ Get user by ID
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable int id) {
+        return userRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
-    @DeleteMapping("/users/{userid}")
-    public String  deletePatient(@PathVariable int userid){
-    	if(person.existsById(userid)) {
-    		person.deleteById(userid);
-    		return "Student deleted";
-    	}
-    	else {
-    		return "student nit found";
-    	}
-}
+
+    // ✅ Update user
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
+        return userRepository.findById(id).map(user -> {
+            user.setName(updatedUser.getName());
+            user.setAge(updatedUser.getAge());
+            user.setAddress(updatedUser.getAddress());
+            user.setWeight(updatedUser.getWeight());
+            user.setEmail(updatedUser.getEmail());
+            user.setPassword(updatedUser.getPassword());
+            return ResponseEntity.ok(userRepository.save(user));
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    // ✅ Delete user
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

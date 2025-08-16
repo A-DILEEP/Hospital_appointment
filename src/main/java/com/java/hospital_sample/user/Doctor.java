@@ -2,8 +2,6 @@ package com.java.hospital_sample.user;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "doctors")
@@ -13,70 +11,27 @@ public class Doctor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long docid;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false)
     private String designation;
+    private String password;
 
-    @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // Constructors
-    public Doctor() {}
+    @PrePersist
+    public void onCreate() { this.createdAt = LocalDateTime.now(); }
 
-    public Doctor(Long docid, String name, String designation, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.docid = docid;
-        this.name = name;
-        this.designation = designation;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
+    @PreUpdate
+    public void onUpdate() { this.updatedAt = LocalDateTime.now(); }
 
-    // Getters and Setters
-    public Long getId() {
-        return docid;
-    }
-
-    public void setId(Long id) {
-        this.docid = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public void setDesignation(String designation) {
-    	this.designation = designation;
-    }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
+    public Long getDocid() { return docid; }
+    public void setDocid(Long docid) { this.docid = docid; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getDesignation() { return designation; }
+    public void setDesignation(String designation) { this.designation = designation; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
 }
