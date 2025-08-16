@@ -1,10 +1,12 @@
 package com.java.hospital_sample.Controller;
 import java.util.List;
+
 import java.util.Optional;
  
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.java.hospital_sample.Repositary.DoctorRepository;
 import com.java.hospital_sample.Repositary.UserRepositary;
-import com.java.hospital_sample.service.DoctorService;
 import com.java.hospital_sample.user.Doctor;
 import com.java.hospital_sample.user.User;
  
- 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -65,40 +66,40 @@ public ResponseEntity<User> getPatientById(@PathVariable int id) {
     		return "user not found";
     	}
 }
-    @Autowired
-    private DoctorService doctorService;
- 
-    @GetMapping("/doctor")
-    public List<Doctor> getAllDoctors() {
-        return doctorService.getAllDoctors();
-    }
- 
-    @GetMapping("/doctor/{docid}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
-        return doctorService.getDoctorById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
- 
-    @PostMapping("/doctor")
-    public Doctor createDoctor(@RequestBody Doctor doctor) {
-        return doctorService.saveDoctor(doctor);
-    }
- 
-    
-    @PutMapping("/doctor/{docid}")
-    public ResponseEntity<Doctor> updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
-        try {
-            Doctor updatedDoctor = doctorService.updateDoctor(id, doctor);
-            return ResponseEntity.ok(updatedDoctor);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
- 
-    @DeleteMapping("/doctor/{docid}")
-    public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
-        doctorService.deleteDoctor(id);
-        return ResponseEntity.noContent().build();
-    }
+//    @Autowired
+//    private DoctorRepository doctorService;
+// 
+//    @GetMapping("/doctor")
+//    public List<Doctor> getAllDoctors() {
+//        return doctorService.getAllDoctors();
+//    }
+// 
+//    @GetMapping("/doctor/{docid}")
+//    public ResponseEntity<Doctor> getDoctorById(@PathVariable Long id) {
+//        return doctorService.getDoctorById(id)
+//                .map(ResponseEntity::ok)
+//                .orElse(ResponseEntity.notFound().build());
+//    }
+// 
+//    @PostMapping("/doctor")
+//    public Doctor createDoctor(@RequestBody Doctor doctor) {
+//        return doctorService.saveDoctor(doctor);
+//    }
+// 
+//    
+//    @PutMapping("/doctor/{docid}")
+//    public ResponseEntity<Doctor> updateDoctor(@PathVariable Long id, @RequestBody Doctor doctor) {
+//        try {
+//            Doctor updatedDoctor = doctorService.updateDoctor(id, doctor);
+//            return ResponseEntity.ok(updatedDoctor);
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
+// 
+//    @DeleteMapping("/doctor/{docid}")
+//    public ResponseEntity<Void> deleteDoctor(@PathVariable Long id) {
+//        doctorService.deleteDoctor(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }

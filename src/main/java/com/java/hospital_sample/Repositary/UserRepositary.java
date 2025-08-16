@@ -7,5 +7,6 @@ import com.java.hospital_sample.user.User;
 
 
 public interface UserRepositary extends JpaRepository<User,Integer>{
+	User findByName(String name);
 
 }
