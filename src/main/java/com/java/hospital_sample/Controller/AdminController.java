@@ -34,7 +34,7 @@ public class AdminController {
     }
  
 @GetMapping("/users/{userid}")
-public ResponseEntity<User> getPatientById(@PathVariable int id) {
+public ResponseEntity<User> getPatientById(@PathVariable Long id) {
     return person.findById(id)
         .map(user -> ResponseEntity.ok().body(user))
         .orElse(ResponseEntity.notFound().build());
@@ -47,7 +47,7 @@ public ResponseEntity<User> getPatientById(@PathVariable int id) {
     }
     
     @PutMapping("/users/{userid}")
-    public String updatePatient(@PathVariable int id, @RequestBody User user) {
+    public String updatePatient(@PathVariable Long id, @RequestBody User user) {
     	if(person.existsById(id)) {
     		person.save(user);
     		return "updated record";
@@ -57,7 +57,7 @@ public ResponseEntity<User> getPatientById(@PathVariable int id) {
     	}
     }
     @DeleteMapping("/users/{userid}")
-    public String  deletePatient(@PathVariable int id){
+    public String  deletePatient(@PathVariable Long id){
     	if(person.existsById(id)) {
     		person.deleteById(id);
     		return "User deleted";

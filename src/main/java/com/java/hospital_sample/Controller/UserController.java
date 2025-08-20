@@ -41,10 +41,11 @@ public class UserController {
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+    
 
     // ✅ Get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return userRepository.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -52,7 +53,7 @@ public class UserController {
 
     // ✅ Update user
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User updatedUser) {
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
         return userRepository.findById(id).map(user -> {
             user.setName(updatedUser.getName());
             user.setAge(updatedUser.getAge());
@@ -66,7 +67,7 @@ public class UserController {
 
     // ✅ Delete user
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         if (userRepository.existsById(id)) {
             userRepository.deleteById(id);
             return ResponseEntity.noContent().build();
