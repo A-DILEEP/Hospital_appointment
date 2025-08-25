@@ -25,10 +25,10 @@ public class UserController {
     // ✅ Login with name and password
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody Map<String, String> credentials) {
-        String name = credentials.get("name");
+        String email = credentials.get("email");
         String password = credentials.get("password");
 
-        User user = userRepository.findByName(name);
+        User user = userRepository.findByEmail(email);
         if (user != null && user.getPassword().equals(password)) {
             return ResponseEntity.ok(user);
         } else {
