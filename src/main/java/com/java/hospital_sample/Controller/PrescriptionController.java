@@ -2,6 +2,7 @@ package com.java.hospital_sample.Controller;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import com.java.hospital_sample.Repositary.AppointmentRepository;
 import com.java.hospital_sample.Repositary.PrescriptionRepository;
 import com.java.hospital_sample.user.Appointment;
 import com.java.hospital_sample.user.Prescription;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/prescriptions")
 public class PrescriptionController {
@@ -23,6 +24,11 @@ public class PrescriptionController {
 
     @Autowired
     private AppointmentRepository appointmentRepository;
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Prescription>> getPrescriptionsByUserId(@PathVariable Long userId) {
+        List<Prescription> prescriptions = prescriptionRepository.findByUserId(userId);
+        return ResponseEntity.ok(prescriptions);
+    }
 
     @PostMapping("/write")
     public ResponseEntity<Map<String, Object>> createPrescription(@RequestBody PrescriptionDTO request) {
